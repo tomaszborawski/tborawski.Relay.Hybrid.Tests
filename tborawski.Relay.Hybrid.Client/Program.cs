@@ -14,6 +14,7 @@ namespace tborawski.Relay.Hybrid.Client
                 using (var channel = clientChannelFactory.CreateChannel(config))
                 {
                     Parallel.For(1, 100, i => Console.WriteLine($"Add({i}, 1) = {channel.Add(i, 1)}"));
+                    Console.ReadLine();
                 }
             }
             catch (NotImplementedException ex)

@@ -7,8 +7,13 @@
             ConfigBootstrap.Init();
             var config = ConfigBootstrap.Read<HybidRelayConfiguration>("HybidRelayConfiguration");
             var service = new ServiceHost<Test>();
-            Task.Run(() => service.OpenAsync(config, CancellationToken.None));
+            var cts = new CancellationTokenSource();
+            Task.Run(() => service.OpenAsync(config, cts.Token));
             Console.WriteLine("Server is running");
+            Console.ReadLine();
+
+            //Close the service
+            cts.Cancel();
             Console.ReadLine();
         }
     }
