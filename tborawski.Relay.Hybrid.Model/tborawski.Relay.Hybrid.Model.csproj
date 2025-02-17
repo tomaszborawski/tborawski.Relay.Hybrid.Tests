@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Relay" Version="3.0.1" />
-    <PackageReference Include="tborawski.Relay.Hybrid" Version="1.0.8" />
+    <PackageReference Include="tborawski.Relay.Hybrid" Version="1.0.9" />
   </ItemGroup>
 
 </Project>
