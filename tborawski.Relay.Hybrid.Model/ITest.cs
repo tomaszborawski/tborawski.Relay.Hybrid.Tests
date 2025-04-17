@@ -3,5 +3,10 @@
     public interface ITest
     {
         int Add(int i, int j);
+        Task<int> AddAsync(int i, int j);
+        void TestMethod();
+        Task TestAsync();
+
+        Task<int> TestCancelationToken(CancellationToken cancellationToken);
     }
 }
