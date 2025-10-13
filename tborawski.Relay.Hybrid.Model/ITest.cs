@@ -8,5 +8,6 @@
         Task TestAsync();
 
         Task<int> TestCancelationToken(CancellationToken cancellationToken);
+        Task TestProgressAsync(IProgress<int> progress);
     }
 }

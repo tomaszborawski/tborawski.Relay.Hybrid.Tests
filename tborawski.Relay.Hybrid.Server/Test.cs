@@ -33,5 +33,14 @@ namespace tborawski.Relay.Hybrid.Server
             await Task.Delay(10000000, cancellationToken);
             return 5;
         }
+
+        public async Task TestProgressAsync(IProgress<int> progress)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                progress.Report(i * 10);
+                await Task.Delay(1000);
+            }
+        }
     }
 }
