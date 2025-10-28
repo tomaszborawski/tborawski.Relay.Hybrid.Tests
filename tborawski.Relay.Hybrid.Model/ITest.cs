@@ -1,4 +1,6 @@
-﻿namespace tborawski.Relay.Hybrid.Model
+﻿using tborawski.Relay.Hybrid.Attributes;
+
+namespace tborawski.Relay.Hybrid.Model
 {
     public interface ITest
     {
@@ -7,7 +9,8 @@
         void TestMethod();
         Task TestAsync();
 
-        Task<int> TestCancelationToken(CancellationToken cancellationToken);
+        [OneWay]
+        Task TestOneWayAsync(IProgress<int> progress, CancellationToken cancellationToken);
         Task TestProgressAsync(IProgress<int> progress);
     }
 }

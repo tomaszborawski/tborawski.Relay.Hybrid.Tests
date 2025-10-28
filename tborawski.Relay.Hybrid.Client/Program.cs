@@ -1,4 +1,6 @@
-﻿using tborawski.Relay.Hybrid.Model;
+﻿using System.Threading.Channels;
+using System.Threading.Tasks;
+using tborawski.Relay.Hybrid.Model;
 using tborawski.Relay.Hybrid.Public;
 
 namespace tborawski.Relay.Hybrid.Client
@@ -7,12 +9,15 @@ namespace tborawski.Relay.Hybrid.Client
     {
         static void Main(string[] args)
         {
+            Go().Wait();
+        }
+        static async Task Go()
+        {
             try
             {
                 ConfigBootstrap.Init();
                 var config = ConfigBootstrap.Read<HybidRelayConfiguration>("HybidRelayConfiguration");
                 ClientChannelFactory<ITest, ITestClient> clientChannelFactory = new ClientChannelFactory<ITest, ITestClient>();
-
 
                 using (var channel = clientChannelFactory.CreateChannel(config))
                 {
@@ -33,24 +38,23 @@ namespace tborawski.Relay.Hybrid.Client
 
                 using (var channel3 = clientChannelFactory.CreateChannel(config))
                 {
-                    Task.Run(async () =>
-                    {
-                       await channel3.TestProgressAsync(new Progress<int>(p =>
+                    await channel3.TestProgressAsync(new Progress<int>(p =>
                     {
                         Console.WriteLine($"Progres {p}");
                     }));
-                   }).Wait();
                 }
 
                 using (var channel4 = clientChannelFactory.CreateChannel(config))
                 {
                     var cts = new CancellationTokenSource();
-                    Task.Run(async () =>
+
+                    await channel4.TestOneWayAsync(new Progress<int>(p =>
                     {
-                        await Task.Delay(10000);
-                        cts.Cancel();
-                    });
-                    Task.Run(() => channel4.TestCancelationToken(cts.Token)).Wait();
+                        Console.WriteLine($"Progres {p}");
+                    }), cts.Token);
+                    await Task.Delay(1000);
+                    cts.Cancel();
+                    await Task.Delay(500000);
                 }
 
             }

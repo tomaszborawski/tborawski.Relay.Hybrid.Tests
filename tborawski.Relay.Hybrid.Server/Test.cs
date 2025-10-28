@@ -28,10 +28,16 @@ namespace tborawski.Relay.Hybrid.Server
             throw new NotImplementedException();
         }
 
-        public async Task<int> TestCancelationToken(CancellationToken cancellationToken)
+        public Task TestOneWayAsync(IProgress<int> progress, CancellationToken cancellationToken)
         {
-            await Task.Delay(10000000, cancellationToken);
-            return 5;
+            return Task.Run(async () =>
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    progress.Report(i * 10);
+                    await Task.Delay(1000, cancellationToken);
+                }
+            });
         }
 
         public async Task TestProgressAsync(IProgress<int> progress)
