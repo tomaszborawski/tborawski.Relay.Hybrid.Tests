@@ -19,14 +19,14 @@ namespace tborawski.Relay.Hybrid.Client
                 var config = ConfigBootstrap.Read<HybidRelayConfiguration>("HybidRelayConfiguration");
                 ClientChannelFactory<ITest, ITestClient> clientChannelFactory = new ClientChannelFactory<ITest, ITestClient>();
 
-                using (var channel = clientChannelFactory.CreateChannel(config))
+                using (var channel = await clientChannelFactory.CreateChannelAsync(config))
                 {
                     Parallel.For(1, 5, i => Console.WriteLine($"Add({i}, 1) = {channel.Add(i, 1)}"));
                     Task.Run(async () => Console.WriteLine(await channel.AddAsync(2, 5))).Wait();
                     channel.TestMethod();
                 }
 
-                using (var channel2 = clientChannelFactory.CreateChannel(config))
+                using (var channel2 = await clientChannelFactory.CreateChannelAsync(config))
                 {
 
                     Parallel.For(1, 5, i => Console.WriteLine($"Add({i}, 1) = {channel2.Add(i, 1)}"));
@@ -36,7 +36,7 @@ namespace tborawski.Relay.Hybrid.Client
                     //Task.Run(async () => await channel2.TestAsync()).Wait();
                 }
 
-                using (var channel3 = clientChannelFactory.CreateChannel(config))
+                using (var channel3 = await clientChannelFactory.CreateChannelAsync(config))
                 {
                     await channel3.TestProgressAsync(new Progress<int>(p =>
                     {
@@ -44,7 +44,7 @@ namespace tborawski.Relay.Hybrid.Client
                     }));
                 }
 
-                using (var channel4 = clientChannelFactory.CreateChannel(config))
+                using (var channel4 = await clientChannelFactory.CreateChannelAsync(config))
                 {
                     var cts = new CancellationTokenSource();
 
